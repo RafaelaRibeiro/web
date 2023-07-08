@@ -23,6 +23,8 @@ export default {
     ],
   },
 
+  target: 'static',
+
   router: {
     middleware: ['auth'],
   },
