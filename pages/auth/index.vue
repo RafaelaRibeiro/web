@@ -37,13 +37,24 @@
               ></v-text-field>
               <v-row align="center" justify="space-around">
                 <v-col class="d-flex justify-center">
-                  <v-btn dark block color="#042d65" elevation="4">
-                    Entrar
+                  <v-btn
+                    dark
+                    block
+                    color="#042d65"
+                    elevation="4"
+                    @click="signin"
+                  >
+                    <span v-if="loading">
+                      <i class="el-icon-loading"></i> Aguarde...
+                    </span>
+                    <span v-else>Entrar</span>
                   </v-btn>
                 </v-col>
               </v-row>
               <div class="text-center mt-5">
-                <span class="text-gray-600"> Esqueci minha senha</span>
+                <button type="text" class="text-gray-600">
+                  Primeiro acesso
+                </button>
               </div>
             </v-container>
           </v-form>
@@ -63,7 +74,29 @@ export default {
 
       login: '',
       password: '',
+      loading: false,
     }
+  },
+
+  methods: {
+    async signin() {
+      try {
+        this.loading = true
+        await this.$auth.loginWith('local', {
+          data: { login: this.login, password: this.password },
+        })
+        this.$router.push('/compras/coleta')
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const { data } = error.response
+          this.$toast.error(data.message, { position: 'top-center' })
+        } else {
+          console.error('Erro de resposta:', error)
+        }
+      } finally {
+        this.loading = false
+      }
+    },
   },
 }
 </script>

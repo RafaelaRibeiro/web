@@ -23,6 +23,10 @@ export default {
     ],
   },
 
+  router: {
+    middleware: ['auth'],
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     'element-ui/lib/theme-chalk/index.css',
@@ -46,6 +50,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     [
       'vue-toastification/nuxt',
       {
@@ -55,6 +60,35 @@ export default {
       },
     ],
   ],
+
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          global: true,
+          // Usar o localStorage como padrão de armazenamento do token
+        },
+
+        user: {
+          property: 'user',
+          //autoFetch: true,
+        },
+        endpoints: {
+          login: { url: '/auth', method: 'post' },
+          logout: false,
+          user: { url: '/auth/user', method: 'get' },
+        },
+      },
+    },
+
+    redirect: {
+      login: '/auth/',
+      logout: '/',
+      callback: '/auth/',
+      home: '/',
+    },
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -83,7 +117,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [/^element-ui/],
+    transpile: [/^element-ui/, 'defu'],
     postcss: {
       postcssOptions: {
         plugins: {

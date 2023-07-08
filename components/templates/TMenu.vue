@@ -41,7 +41,7 @@
               {{ subItem.title }}
             </el-menu-item>
           </el-submenu>
-          <el-menu-item>
+          <el-menu-item @click="logout">
             <v-icon class="pr-6"> mdi-logout </v-icon>
             <span slot="title">{{ exit }}</span>
           </el-menu-item>
@@ -68,6 +68,11 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    async logout() {
+      await this.$auth.logout()
+    },
   },
 }
 </script>

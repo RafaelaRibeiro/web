@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-footer :absolute="!fixed" app>
-      <justify-space-around class="text-gray-500">
+      <span class="text-gray-500">
         &copy; {{ currentYear }} {{ companyName }} - V. {{ appVersion }}
-      </justify-space-around>
+      </span>
     </v-footer>
   </div>
 </template>
